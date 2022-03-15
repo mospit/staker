@@ -1,6 +1,3 @@
-/**
- *Submitted for verification at polygonscan.com on 2022-01-20
-*/
 
 // File: @openzeppelin/contracts/security/ReentrancyGuard.sol
 
@@ -25,6 +22,9 @@ pragma solidity ^0.8.0;
  * to protect against it, check out our blog post
  * https://blog.openzeppelin.com/reentrancy-after-istanbul/[Reentrancy After Istanbul].
  */
+ 
+ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol";
+ 
 abstract contract ReentrancyGuard {
     // Booleans are more expensive than uint256 or any type that takes up a full
     // word because each write operation emits an extra SLOAD to first read the
@@ -68,12 +68,10 @@ abstract contract ReentrancyGuard {
     }
 }
 
-// File: contracts/StableOne.sol
-
 
 pragma solidity 0.8.11;
 
-contract StableOne is ReentrancyGuard {
+contract EroStaking is ReentrancyGuard {
     using SafeMath for uint256;
     address public owner;
     uint256 private constant PRIMARY_BENIFICIARY_INVESTMENT_PERC = 65;
@@ -82,11 +80,11 @@ contract StableOne is ReentrancyGuard {
     uint256 private constant SECONDARY_BENIFICIARY_REINVESTMENT_PERC = 20;
     uint256 private constant PLAN_TERM = 30 days;
     uint256 private constant TIME_STEP_DRAW = 1 days;
-    uint256 private constant DAILY_INTEREST_RATE = 70;
-    uint256 private constant DAILY_AUTO_REINTEREST_RATE = 210;
+    uint256 private constant DAILY_INTEREST_RATE = 100;
+    uint256 private constant DAILY_AUTO_REINTEREST_RATE = 250;
     uint256 private constant ON_WITHDRAW_AUTO_REINTEREST_RATE = 250;
-    uint256 private constant MIN_WITHDRAW = 0.02 ether;
-    uint256 private constant MIN_INVESTMENT = 0.05 ether;
+    uint256 private constant MIN_WITHDRAW = 2000;
+    uint256 private constant MIN_INVESTMENT = 5000;
     uint256 private constant REFERENCE_LEVEL1_RATE = 50;
     uint256 private constant REFERENCE_LEVEL2_RATE = 30;
     uint256 private constant REFERENCE_LEVEL3_RATE = 15;
@@ -94,6 +92,7 @@ contract StableOne is ReentrancyGuard {
     uint256 private constant REFERENCE_LEVEL5_RATE = 5;
     address payable public primaryBenificiary;
     address payable public secondaryBenificiary;
+    IERC20 ERO = IERC20();
     uint256 public totalInvested;
     uint256 public activeInvested;
     uint256 public totalWithdrawal;
