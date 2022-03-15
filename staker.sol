@@ -92,7 +92,7 @@ contract EroStaking is ReentrancyGuard {
     uint256 private constant REFERENCE_LEVEL5_RATE = 5;
     address payable public primaryBenificiary;
     address payable public secondaryBenificiary;
-    IERC20 ERO = IERC20();
+    IERC20 ERO;
     uint256 public totalInvested;
     uint256 public activeInvested;
     uint256 public totalWithdrawal;
@@ -121,7 +121,8 @@ contract EroStaking is ReentrancyGuard {
     event OnReinvest(address investor, uint256 amount);
     constructor(
         address payable _primaryAddress,
-        address payable _secondaryAddress
+        address payable _secondaryAddress,
+        address _ero
     ) {
         require(
             _primaryAddress != address(0) && _secondaryAddress != address(0),
@@ -129,6 +130,7 @@ contract EroStaking is ReentrancyGuard {
         );
         primaryBenificiary = _primaryAddress;
         secondaryBenificiary = _secondaryAddress;
+        ERO = IERC20(_ero);
         owner = msg.sender;
     }
     modifier onlyOwner() {
